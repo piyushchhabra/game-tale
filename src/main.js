@@ -13,6 +13,7 @@ const config = {
 			gravity: { y: 0 }
 		}
 	},
+	backgroundColor: '#245fa3',
 	scene: [Preloader, Game]
 }
 
