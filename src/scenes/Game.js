@@ -78,8 +78,9 @@ export default class Game extends Phaser.Scene {
 
         if (this.player.x > width * 0.5 + 80 && !this.shownMsg) {
             this.shownMsg = true
-            this.showText("Hello Udayan.\nI am Radhika.\nI am new in Bangalore.\nWill you please help me exploring the city?")
-        }
+
+        this.showText("Hello Udayan.\nI am Radhika.\nI am new in Bangalore.\nWill you please help me exploring the city?")
+
 
     }
 
