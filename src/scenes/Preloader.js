@@ -27,6 +27,12 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('ground', 'assets/ground.png')
         this.load.image('plant', 'assets/plant.png')
         this.load.image('laser', 'assets/laser.png')
+
+        this.load.image('balloon-blue', 'assets/balloon-blue.png')
+        this.load.image('balloon-red', 'assets/balloon-red.png')
+        this.load.image('balloon-green', 'assets/balloon-green.png')
+        this.load.image('balloon-green', 'assets/balloon-green.png')
+        this.load.audio('pop','assets/pop.mp3');
     }
 
     create() {
@@ -54,6 +60,6 @@ export default class Preloader extends Phaser.Scene {
             repeat: -1
         })
 
-        this.scene.start('game')
+        this.scene.start('ballon')
     }
 }
