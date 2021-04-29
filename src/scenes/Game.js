@@ -1,4 +1,4 @@
-import Phaser from 'phaser'
+import Phaser, { Physics } from 'phaser'
 import WebFontFile from './WebFontFile'
 
 /**
@@ -39,8 +39,13 @@ export default class Game extends Phaser.Scene {
 
     mountainMid2
 
+    laserGroup
+
+    fireKeys
+
     constructor() {
 		super('game')
+    
 	}
 
 
@@ -57,6 +62,7 @@ export default class Game extends Phaser.Scene {
 
     create() {
         const {width, height} = this.scale
+
         // this.mountainBack = this.add.tileSprite(0,-294 + 300, 2048, 894,  'mountains-back')
         // this.mountainMid1 = this.add.tileSprite(0,-170 + 300, 2048, 770,  'mountains-mid1')
         // this.mountainMid2 = this.add.tileSprite(0,118 + 300, 2048, 482,  'mountains-mid2')
@@ -86,15 +92,17 @@ export default class Game extends Phaser.Scene {
             stroke: '#000000',
             strokeThickness: 1
 		})
+
+        this.laserGroup = new LaserGroup(this)
         this.cameras.main.setBounds(0, 0, width*5, height)
+        this.addEvents()
+
     }
 
     update() {
         const speed = 200
         const {width, height} = this.scale
-
         const cam =  this.cameras.main
-    
         if (this.cursors.right.isDown ) {
             cam.scrollX +=  3
             this.player.setVelocityX(speed)
@@ -123,6 +131,15 @@ export default class Game extends Phaser.Scene {
             this.showText("Hello Bob.\nI am Alice from Tech Team.\nI have some doubts related to a project.\nWill you be able to help out?")
         }
 
+        this.fireKeys.forEach(element => {
+            if (Phaser.Input.Keyboard.JustDown(element)) {
+                this.shootLaser()
+            }
+        })
+    }
+
+    shootLaser() {
+        this.laserGroup.fireLaser(this.player.x+100, this.player.y)
     }
 
     moveBg(right) {
@@ -175,4 +192,57 @@ export default class Game extends Phaser.Scene {
         })
     }
 
+    addEvents() {
+        this.input.on('pointerdown', pointer => {
+            this.shootLaser()
+        })
+
+        this.fireKeys = [this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)]
+    }
+}
+
+class Laser extends Phaser.Physics.Arcade.Sprite {
+
+    currScene
+    constructor(scene , x, y) {
+        super(scene, x, y, 'laser')
+        this.currScene = scene
+    }
+
+    fire(x,y) {
+        this.body.reset(x, y)
+        this.setActive(true)
+        this.setVisible(true)
+        this.setVelocityX(500)
+        console.log(this.currScene.cameras.main.width)
+    }
+
+    preUpdate(time, delta) {
+        super.preUpdate(time, delta)
+
+        if(this.x > this.currScene.cameras.main.width) {
+            this.setActive(false)
+            this.setVisible(false)
+        }
+    }
+
+}
+
+class LaserGroup extends Phaser.Physics.Arcade.Group {
+    constructor(scene) {
+        super(scene.physics.world, scene)
+        this.createMultiple({
+            classType: Laser,
+            frameQuantity: 10,
+            active: false,
+            visible: false,
+            key: 'laser'
+        })
+    }
+
+    fireLaser(x, y) {
+        console.log("fired in group")
+        const laser = this.getFirstDead(false)
+        if (laser) {laser.fire(x, y)}
+    }
 }
