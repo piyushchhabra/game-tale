@@ -20,6 +20,12 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('mountains-back', 'textures/mountains-back.png');
 		this.load.image('mountains-mid1', 'textures/mountains-mid1.png');
 		this.load.image('mountains-mid2', 'textures/mountains-mid2.png');
+
+        this.load.image('sky', 'assets/sky.png');
+        this.load.image('mountain', 'assets/mountains.png')
+        this.load.image('plateau', 'assets/plateau.png')
+        this.load.image('ground', 'assets/ground.png')
+        this.load.image('plant', 'assets/plant.png')
     }
 
     create() {

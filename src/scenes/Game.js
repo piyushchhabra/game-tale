@@ -1,6 +1,25 @@
 import Phaser from 'phaser'
 import WebFontFile from './WebFontFile'
 
+/**
+ * 
+ * @param {Phaser.Scene} scene 
+ * @param {*} count 
+ * @param {*} texture 
+ * @param {*} scrolfactor 
+ */
+const createLoop = (scene, count, texture, scrolfactor) => {
+    let x = 0
+    for (let i=0; i< count; i++) {
+        const m  = scene.add.image(x, scene.scale.height, texture)
+        .setOrigin(0,0.8)
+        .setScrollFactor(scrolfactor)
+
+        x += m.width
+    }
+  
+}
+
 export default class Game extends Phaser.Scene {
     /**@type {Phaser.Physics.Arcade.Sprite} */
     player
@@ -38,32 +57,55 @@ export default class Game extends Phaser.Scene {
 
     create() {
         const {width, height} = this.scale
-        this.mountainBack = this.add.tileSprite(0,-294 + 300, 2048, 894,  'mountains-back')
-        this.mountainMid1 = this.add.tileSprite(0,-170 + 300, 2048, 770,  'mountains-mid1')
-        this.mountainMid2 = this.add.tileSprite(0,118 + 300, 2048, 482,  'mountains-mid2')
-        this.player = this.physics.add.sprite(width * 0.5 - 250, height * 0.5, 'girl').play('girl-idle')
-        this.guy = this.physics.add.sprite(width * 0.5 + 150, height * 0.5, 'boy').play('boy-idle')
+        // this.mountainBack = this.add.tileSprite(0,-294 + 300, 2048, 894,  'mountains-back')
+        // this.mountainMid1 = this.add.tileSprite(0,-170 + 300, 2048, 770,  'mountains-mid1')
+        // this.mountainMid2 = this.add.tileSprite(0,118 + 300, 2048, 482,  'mountains-mid2')
+        this.add.image(width * 0.5, height*0.5, 'sky').setScrollFactor(0)
+        
+        createLoop(this, 2, 'mountain', 0.25)
+        // const m = this.add.image(0, height, 'mountain').setOrigin(0,0.8).setScrollFactor(0.25)
+        // this.add.image(m.width, height, 'mountain').setOrigin(0,0.8).setScrollFactor(0.25)
 
-        this.label = this.add.text(500, 120, '')
-        this.boyLabel = this.add.text(700, 250, '',  {
+        // this.add.image(0, height, 'plateau').setOrigin(0,0.8).setScrollFactor(0.5)
+        createLoop(this, 3, 'plateau', 0.5)
+
+
+        // this.add.image(0, height, 'ground').setOrigin(0,0.8).setScrollFactor(1)
+        createLoop(this, 3, 'ground', 1)
+        
+        // this.add.image(0, height, 'plant').setOrigin(0,0.8).setScrollFactor(1.25)
+        createLoop(this, 3, 'plant', 1.25)
+        
+        
+        this.player = this.physics.add.sprite(width * 0.5 - 350, height * 0.8, 'girl').play('girl-idle')
+        this.guy = this.physics.add.sprite(width * 0.5 + 150, height * 0.8, 'boy').play('boy-idle')
+
+        this.label = this.add.text(550, 520, '')
+        this.boyLabel = this.add.text(770, 590, '',  {
             color: '#ffffff',
             stroke: '#000000',
             strokeThickness: 1
 		})
+        this.cameras.main.setBounds(0, 0, width*5, height)
     }
 
     update() {
         const speed = 200
         const {width, height} = this.scale
+
+        const cam =  this.cameras.main
     
-        if (this.cursors.right.isDown && this.player.x < width - 20) {
+        if (this.cursors.right.isDown ) {
+            cam.scrollX +=  3
             this.player.setVelocityX(speed)
             this.player.play('girl-right-walk', true)
-            this.moveBg(false)
+    
+            // this.moveBg(false)
         } else if (this.cursors.left.isDown && this.player.x > 10) {
+            cam.scrollX -=  3
             this.player.setVelocityX(-speed)
             this.player.play('girl-right-walk', true)
-            this.moveBg(true)
+            // this.moveBg(true)
         } else {
             this.player.setVelocity(0, 0)
             this.player.play('girl-idle')
@@ -78,9 +120,8 @@ export default class Game extends Phaser.Scene {
 
         if (this.player.x > width * 0.5 + 80 && !this.shownMsg) {
             this.shownMsg = true
-
-        this.showText("Hello Udayan.\nI am Radhika.\nI am new in Bangalore.\nWill you please help me exploring the city?")
-
+            this.showText("Hello Bob.\nI am Alice from Tech Team.\nI have some doubts related to a project.\nWill you be able to help out?")
+        }
 
     }
 
