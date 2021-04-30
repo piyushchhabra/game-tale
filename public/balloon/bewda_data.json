@@ -32,5 +32,6 @@
     "startTextTitle" : "Hi Bewda",
     "startTextSubTitle" : "I know we have not been drinking together for few weeks now. \n\nI really really miss our beer nights. \n\nLet's have the party. \n\nI'll make it all up to you",
     "endTextTitle" : "Badh me jao !!",
-    "balloonBgs" : ["assets/random-girl.jpeg","assets/random-girl2.jpeg"]
+    "balloonBgs" : ["assets/random-girl.jpeg","assets/random-girl2.jpeg"],
+    "blackAndWhiteMode" : true
 }

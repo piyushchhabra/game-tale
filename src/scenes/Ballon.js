@@ -14,6 +14,7 @@ export default class Ballon extends Phaser.Scene {
         this.bg2
         this.bgCount
         this.currBgIndex
+        this.blackAndWhiteMode = false
     }
 
     preload() {
@@ -30,6 +31,10 @@ export default class Ballon extends Phaser.Scene {
             this.load.image('balloonBg-'+i, data.balloonBgs[i-1]) 
         }
         this.currBgIndex = 1
+        if (data.blackAndWhiteMode) {
+            console.log("Black And White mode is set")
+            this.blackAndWhiteMode = true
+        }
     }
 
     create() {
@@ -153,7 +158,6 @@ export default class Ballon extends Phaser.Scene {
         const {width, height} = this.scale
         var ran = [2, 3, 4, 5];
         var seed = ran[Math.floor(Math.random()*ran.length)]
-        console.log(seed + "-seed")
         if (seed <= 3) {
             var x = Math.floor(Math.random()*(width-128));
             if (x < width * 0.5) {
@@ -209,8 +213,14 @@ export default class Ballon extends Phaser.Scene {
 	}
 
     randomColor() {
-		var colors = ['balloon-red', 'balloon-blue', 'balloon-green', 'balloon-yellow', 'balloon-purple', 'balloon-grey'];
-        // var colors = ['balloon-grey'];
+        var colors
+        if (this.blackAndWhiteMode) {
+            colors = ['balloon-grey'];
+        } else {
+		    colors = ['balloon-red', 'balloon-blue', 
+            'balloon-green', 'balloon-yellow', 
+            'balloon-purple', 'balloon-grey'];
+        }
 		var random = Math.floor(Math.random()*colors.length);
 		return colors[random];
 	}
