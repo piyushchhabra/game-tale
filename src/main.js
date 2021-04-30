@@ -4,6 +4,15 @@ import Preloader from './scenes/Preloader'
 import Game from './scenes/Game'
 import Ballon from './scenes/Ballon'
 
+function getParameterByName(name, url = window.location.href) {
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
 const config = {
 	type: Phaser.AUTO,
 	// width: 1200,
@@ -21,4 +30,8 @@ const config = {
 	scene: [Preloader, Ballon]
 }
 
-export default new Phaser.Game(config)
+let game = new Phaser.Game(config);
+var code = getParameterByName('code')
+if (!code) code = 'default'
+game.balloonDataFile = "/balloon/" + code + "_data.json" 
+export default game

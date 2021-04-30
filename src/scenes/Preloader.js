@@ -35,6 +35,11 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('balloon-yellow', 'assets/balloon-yellow.png')
         this.load.image('balloon-purple', 'assets/balloon-purple.png')
         this.load.audio('pop','assets/pop.mp3');
+        if (this.game.balloonDataFile) {
+            console.log("loaded data file for ballons - " + this.game.balloonDataFile)
+            this.load.json('balloonData', this.game.balloonDataFile)
+        }
+
     }
 
     create() {
@@ -61,7 +66,6 @@ export default class Preloader extends Phaser.Scene {
             frameRate: 10,
             repeat: -1
         })
-
         this.scene.start('ballon')
     }
 }

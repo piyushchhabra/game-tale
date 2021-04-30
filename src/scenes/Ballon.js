@@ -32,37 +32,8 @@ export default class Ballon extends Phaser.Scene {
     startGame() {
         const {width, height} = this.scale
         console.log("width="+ width)
-        var allQuestions = [
-            {
-                "qText" : "How many days? How many days? How many days?",
-                "opCount" : 3,
-                "options" : [{"text" : "YES", "correct" : true},
-                            {"text" : "MAY-BE", "correct" : false},
-                            {"text" : "NO", "correct" : false}]
-            },
-            {
-                "qText" : "How many months?",
-                "opCount" : 5,
-                "options" : [{"text" : "Bangalore", "correct" : false},
-                             {"text" : "Delhi", "correct" : false},
-                             {"text" : "Mumbai", "correct" : true}]
-            },
-            {
-                "qText" : "How many years?",
-                "opCount" : 2,
-                "options" : [{"text" : "AKELA", "correct" : true},
-                            {"text" : "DUKELA", "correct" : false},
-                            {"text" : "ALBELA", "correct" : false}]
-            },
-            {
-                "qText" : "How many Centuries?",
-                "opCount" : 2,
-                "options" : [{"text" : "Ram", "correct" : true},
-                            {"text" : "Hanuman", "correct" : false},
-                            {"text" : "Karna", "correct" : false}]
-            }
-        ]
-
+        let data = this.game.cache.json.get('balloonData');
+        var allQuestions = data.questions
         for (let i=0; i<allQuestions.length; i++) {
             var curr = allQuestions[i]
             var q = new Question(curr.qText, curr.options)
@@ -177,7 +148,9 @@ class Question {
         if (this.nextQuestion) {
             scene.moveToNext(this.nextQuestion)
         } else {
-            scene.updateQtext("All complete. Congratulations !!")
+            let data = scene.game.cache.json.get('balloonData');
+            console.log("end=" + data.endTextTitle)
+            scene.updateQtext(data.endTextTitle)
         }
     }
 }
