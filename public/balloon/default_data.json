@@ -31,5 +31,6 @@
     ],
     "startTextTitle" : "Hey there, Piyush",
     "startTextSubTitle" : "I know we have not been doing our work for long time now. But I just want you to know that I will do the party tonight",
-    "endTextTitle" : "Thank You !!"
+    "endTextTitle" : "Thank You !!",
+    "balloonBgs" : ["assets/sky.png","assets/random-girl.jpeg"]
 }

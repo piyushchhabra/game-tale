@@ -27,7 +27,7 @@ const config = {
 			gravity: { y: 0 }
 		}
 	},
-	backgroundColor: '#245fa3',
+	backgroundColor: '#000000', //#245fa3
 	scene: [Preloader, Game, Ballon, BalloonTitle]
 }
 

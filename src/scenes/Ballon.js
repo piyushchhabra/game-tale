@@ -6,18 +6,46 @@ export default class Ballon extends Phaser.Scene {
         super("ballon")
         this.balloons 
         this.popSound
+        this.magicSound
+        this.sparkleSound
         this.questions = []
         this.currQuestion
+        this.bg1
+        this.bg2
+        this.bgCount
+        this.currBgIndex
     }
 
     preload() {
         this.load.addFile(new WebFontFile(this.load, 'Press Start 2P'))
         this.popSound = this.sound.add('pop');
+        this.magicSound = this.sound.add('magic');
+        this.sparkleSound = this.sound.add('sparkle');
+
+        const {width, height} = this.scale
+        let data = this.game.cache.json.get('balloonData');
+        console.log("loading bg - " + data.balloonBg)
+        this.bgCount = data.balloonBgs.length
+        for (let i=1; i<=data.balloonBgs.length; i++) {
+            this.load.image('balloonBg-'+i, data.balloonBgs[i-1]) 
+        }
+        this.currBgIndex = 1
     }
 
     create() {
         const {width, height} = this.scale
-        this.balloons = [];this.score = 0;
+        console.log("canvas is " + width + ":" + height)
+        this.bg1 = this.add.sprite(width*0.5, height*0.5, 'balloonBg-1');
+        this.scaleBg(this.bg1)
+        this.bg2 = this.add.sprite(width*0.5, height*0.5, 'balloonBg-2');
+        this.bg2.setAlpha(0)
+        this.scaleBg(this.bg2)
+        this.time.addEvent({
+            delay: 2000,
+            callback: () => this.bgChange(),
+            loop: false
+        })
+        this.balloons = [];
         this.currQText = this.add.text(50,250, '', {
             fontFamily: '"Press Start 2P"',
 			fontSize: '40px',
@@ -29,9 +57,82 @@ export default class Ballon extends Phaser.Scene {
         this.startGame();
     }
 
+    bgChange() {
+        if (this.bg1.alpha == 1) {
+            this.tweens.add({
+                targets: this.bg1,
+                alpha: 0,
+                yoyo: false,
+                repeat: 0,
+                duration: 2000,
+                ease: 'Cubic.easeOut',
+                onComplete: () => this.changeBackground()
+            })
+            this.tweens.add({
+                targets: this.bg2,
+                alpha: 1,
+                yoyo: false,
+                repeat: 0,
+                duration: 2000,
+                ease: 'Cubic.easeOut'
+            })
+        } else {
+            this.tweens.add({
+                targets: this.bg1,
+                alpha: 1,
+                yoyo: false,
+                repeat: 0,
+                duration: 2000,
+                ease: 'Cubic.easeOut'
+            })
+            this.tweens.add({
+                targets: this.bg2,
+                alpha: 0,
+                yoyo: false,
+                repeat: 0,
+                duration: 2000,
+                ease: 'Cubic.easeOut',
+                onComplete: () => this.changeBackground()
+            })
+        }
+      
+    }
+
+    changeBackground() {
+        const {width, height} = this.scale
+        if (this.bg1.alpha === 0){
+            this.bg1.setTexture('balloonBg-' + this.currBgIndex)
+            this.scaleBg(this.bg1)
+            // this.bg1.loadTexture('balloonBg-' + this.currBgIndex);
+        } else{
+            // this.bg2 = this.add.sprite(width*0.5, height*0.5, 'balloonBg-' + this.currBgIndex);
+            this.bg2.setTexture('balloonBg-' + this.currBgIndex)
+            this.scaleBg(this.bg2)
+        }
+
+        this.currBgIndex += 1
+        if (this.currBgIndex > this.bgCount) {
+            this.currBgIndex = 1
+        }
+        this.time.addEvent({
+            delay: 2000,
+            callback: () => this.bgChange(),
+            loop: false
+        })
+    }
+
+    scaleBg(bg) {
+        const {width, height} = this.scale
+        let scaleFactor = 1
+        while (bg.height * scaleFactor < height) {
+            scaleFactor *= 1.2
+        }
+        bg.setScale(scaleFactor)
+    }
+
     startGame() {
         const {width, height} = this.scale
-        console.log("width="+ width)
+        console.log("game width="+ width)
         let data = this.game.cache.json.get('balloonData');
         var allQuestions = data.questions
         for (let i=0; i<allQuestions.length; i++) {
@@ -86,7 +187,9 @@ export default class Ballon extends Phaser.Scene {
     }
 
 	killBalloon(balloon) {
-		this.popSound.play();
+        var sounds = [this.magicSound, this.sparkleSound];
+        sounds[Math.floor(Math.random()*sounds.length)].play()
+		// this.magicSound.play();
         console.log("killing")
         if (balloon.correct) {
             this.balloons.forEach(b =>this.killBFinal(b))
@@ -106,7 +209,8 @@ export default class Ballon extends Phaser.Scene {
 	}
 
     randomColor() {
-		var colors = ['balloon-red', 'balloon-blue', 'balloon-green', 'balloon-yellow', 'balloon-purple'];
+		var colors = ['balloon-red', 'balloon-blue', 'balloon-green', 'balloon-yellow', 'balloon-purple', 'balloon-grey'];
+        // var colors = ['balloon-grey'];
 		var random = Math.floor(Math.random()*colors.length);
 		return colors[random];
 	}

@@ -34,10 +34,13 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('balloon-green', 'assets/balloon-green.png')
         this.load.image('balloon-yellow', 'assets/balloon-yellow.png')
         this.load.image('balloon-purple', 'assets/balloon-purple.png')
+        this.load.image('balloon-grey', 'assets/balloon-grey.png')
         this.load.audio('pop','assets/pop.mp3');
+        this.load.audio('magic','assets/magic.wav');
+        this.load.audio('sparkle','assets/sparkle.wav');
         if (this.game.balloonDataFile) {
             console.log("loaded data file for ballons - " + this.game.balloonDataFile)
-            this.load.json('balloonData', this.game.balloonDataFile)
+            this.load.json('balloonData', this.game.balloonDataFile)           
         }
 
     }

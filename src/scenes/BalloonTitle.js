@@ -42,7 +42,7 @@ export default class BalloonTitle extends Phaser.Scene {
             fontSize: '50px',
             color:'#ffffff', 
         })
-        this.setButtonVisible(false)
+        this.setButtonVisible(true)
         this.button.setInteractive()
         this.button.on('pointerdown', ()=> {
             if(this.input.activePointer.isDown) {
