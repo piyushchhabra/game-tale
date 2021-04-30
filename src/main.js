@@ -3,6 +3,7 @@ import Phaser from 'phaser'
 import Preloader from './scenes/Preloader'
 import Game from './scenes/Game'
 import Ballon from './scenes/Ballon'
+import BalloonTitle from './scenes/BalloonTitle'
 
 function getParameterByName(name, url = window.location.href) {
     name = name.replace(/[\[\]]/g, '\\$&');
@@ -27,7 +28,7 @@ const config = {
 		}
 	},
 	backgroundColor: '#245fa3',
-	scene: [Preloader, Ballon]
+	scene: [Preloader, Game, Ballon, BalloonTitle]
 }
 
 let game = new Phaser.Game(config);

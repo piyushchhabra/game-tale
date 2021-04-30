@@ -29,5 +29,7 @@
                         {"text" : "Karna", "correct" : false}]
         }
     ],
+    "startTextTitle" : "Hey there, Piyush",
+    "startTextSubTitle" : "I know we have not been doing our work for long time now. But I just want you to know that I will do the party tonight",
     "endTextTitle" : "Thank You !!"
 }

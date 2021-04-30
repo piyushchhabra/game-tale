@@ -50,10 +50,18 @@ export default class Ballon extends Phaser.Scene {
 
     addBalloon(msg, correct) {
         const {width, height} = this.scale
-        var ran = [64, 94, -30, -50];
-		var x = Math.floor(Math.random()*(width-128)) + ran[Math.floor(Math.random()*ran.length)];
+        var ran = [2, 3, 4, 5];
+        var seed = ran[Math.floor(Math.random()*ran.length)]
+        console.log(seed + "-seed")
+        if (seed <= 3) {
+            var x = Math.floor(Math.random()*(width-128));
+            if (x < width * 0.5) {
+                x += 2 * ((width*0.5) - x)
+            }
+        }
+		
 		var balloon = new Gubbara(this, x, height+20, this.randomColor(), msg, correct);
-		balloon.speed = 0.25 + Math.random() + 2;
+		balloon.speed = 0.25 + Math.random() + seed;
 		this.balloons.push(balloon);
         return balloon
 	}
