@@ -15,17 +15,17 @@ export default class Ballon extends Phaser.Scene {
         this.bgCount
         this.currBgIndex
         this.blackAndWhiteMode = false
+
     }
 
     preload() {
         this.load.addFile(new WebFontFile(this.load, 'Press Start 2P'))
-        this.popSound = this.sound.add('pop');
+        // this.popSound = this.sound.add('pop');
         this.magicSound = this.sound.add('magic');
         this.sparkleSound = this.sound.add('sparkle');
 
         const {width, height} = this.scale
         let data = this.game.cache.json.get('balloonData');
-        console.log("loading bg - " + data.balloonBg)
         this.bgCount = data.balloonBgs.length
         for (let i=1; i<=data.balloonBgs.length; i++) {
             this.load.image('balloonBg-'+i, data.balloonBgs[i-1]) 
@@ -191,15 +191,14 @@ export default class Ballon extends Phaser.Scene {
     }
 
 	killBalloon(balloon) {
-        var sounds = [this.magicSound, this.sparkleSound];
-        sounds[Math.floor(Math.random()*sounds.length)].play()
-		// this.magicSound.play();
-        console.log("killing")
+        console.log("killing balloon now")
         if (balloon.correct) {
+            this.magicSound.play()
             this.balloons.forEach(b =>this.killBFinal(b))
             this.balloons = []
             this.currQuestion.complete(this)
         } else {
+            this.sparkleSound.play()
             this.balloons = this.balloons.filter(b => b!==balloon);
             this.killBFinal(balloon)
         }
@@ -291,12 +290,13 @@ class Gubbara extends Phaser.GameObjects.Sprite {
 		this.angleDir = -1 + Math.round(Math.random())*2;
         this.currScene = scene	// 1 or -1
         this.msg = msg
+        var msgColor = scene.blackAndWhiteMode ? '#ffffff' : '#d8eb34'
         this.msgObj = scene.add.text(x,y,  msg, {
             // fontFamily: '"Press Start 2P"',
 			fontSize: '40px',
-            color:'#d8eb34', 
+            color: msgColor, 
             });
-        this.msgObj.setStroke('#de77ae', 5);
+        this.msgObj.setStroke('#d0000', 5);
 		this.msgObj.setShadow(2, 2, '#333333', 2, true, false);
         this.correct = correct
 	}

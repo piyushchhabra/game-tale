@@ -39,7 +39,7 @@ export default class Preloader extends Phaser.Scene {
         this.load.audio('magic','assets/magic.wav');
         this.load.audio('sparkle','assets/sparkle.wav');
         if (this.game.balloonDataFile) {
-            console.log("loaded data file for ballons - " + this.game.balloonDataFile)
+            console.log("now loading data file for ballons - " + this.game.balloonDataFile)
             this.load.json('balloonData', this.game.balloonDataFile)           
         }
 

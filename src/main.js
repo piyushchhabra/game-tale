@@ -34,5 +34,5 @@ const config = {
 let game = new Phaser.Game(config);
 var code = getParameterByName('code')
 if (!code) code = 'default'
-game.balloonDataFile = "/balloon/" + code + "_data.json" 
+game.balloonDataFile = "balloon/" + code + "_data.json" 
 export default game
